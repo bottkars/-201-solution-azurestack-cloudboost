@@ -44,6 +44,7 @@
         },
         "cloudboostNetworkInterfaceType": {
             "type": "string",
+            "defaultValue": "Private",
             "metadata": {
                 "description": "Do we want to Connect AVE with Public IP ?"
             },
