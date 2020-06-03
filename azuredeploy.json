@@ -1023,7 +1023,6 @@
                         "diskSizeGB": 50
                     },
                     "dataDisks":[{
-                        "osType": "Linux",
                         "LUN" :0,
                         "blobUri": "[parameters('cloudboostLvmImageURI')]",
                         "storageAccountType": "Standard_LRS",
