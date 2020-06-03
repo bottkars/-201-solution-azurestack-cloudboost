@@ -15,7 +15,7 @@
             "value": "https://opsmanagerimage.blob.local.azurestack.external/images/cloudboost/19.2/lvm.vhd"
         },
         "cloudboostName": {
-            "value": "cloudboostazs1"
+            "value": "cloudboost"
         },
         "cloudboostNetworkInterfaceType": {
             "value": "Private"
