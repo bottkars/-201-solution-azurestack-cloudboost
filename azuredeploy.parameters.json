@@ -29,11 +29,8 @@
         "cloudboostUsername": {
             "value": "avamaruser"
         },
-        "cloudboostRootVhd": {
-            "value": "root.vhd"
-        },
-        "cloudboostLvmVhd": {
-            "value": "lvm.vhd"
+        "cloudboostVersion": {
+            "value": "19.2"
         },
         "diagnosticsStorageAccountExistingResourceGroup": {
             "value": "registry"

@@ -36,7 +36,7 @@
         },        
         "cloudboostName": {
             "type": "string",
-            "defaultValue": "cloudboostazs1",
+            "defaultValue": "cloudboost",
             "maxLength": 10,
             "metadata": {
                 "description": "Name of the AVE virtual machine"
@@ -77,22 +77,14 @@
                 "description": "The username for AVE."
             }
         },
-        "cloudboostRootVhd": {
+        "cloudboostVersion": {
             "type": "string",
-            "defaultValue": "root.vhd",
+            "defaultValue": "19.2",
             "metadata": {
-                "description": "AVE VHD Name"
+                "description": "Version of CloudBoost"
             }
 
         },
-        "cloudboostLvmVhd": {
-            "type": "string",
-            "defaultValue": "lvm.vhd",
-            "metadata": {
-                "description": "AVE VHD Name"
-            }
-
-        },        
         "diagnosticsStorageAccountExistingResourceGroup": {
             "type": "string",
             "defaultValue": "registry",
@@ -141,8 +133,7 @@
             "id": "[resourceId('Microsoft.Network/publicIPAddresses',Concat(variables('cloudboostNicName'),'-pip'))]"
         },
         "cloudboostPublicIPName": "[concat(variables('cloudboostNicName'),'-pip')]",
-        "cloudboostVersion": "[replace(parameters('cloudboostVhd'),'.vhd', '')]",
-        "cloudboostVmSize": "[if(equals(parameters('cloudboostSizeInTB'), '2'), 'Standard_DS3_v2', 'Standard_DS4_v2')]",
+        "cloudboostVmSize": "Standard_DS4_v2",
         "filesToDownload": [
             "https://raw.githubusercontent.com/bottkars/201-solution-azurestack-avamar/master/scripts/deploy_base.sh",
             "https://raw.githubusercontent.com/bottkars/201-solution-azurestack-avamar/master/scripts/configure-cloudboost-azs.sh"
@@ -195,7 +186,7 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "id": "[resourceId('Microsoft.Compute/images', variables('cloudboostVersion'))]"
+                        "id": "[resourceId('Microsoft.Compute/images', parameters('cloudboostVersion'))]"
                     },
                     "osDisk": {
                         "name": "[variables('cloudboostRootDisk')]",
@@ -240,7 +231,7 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkInterfaces', variables('cloudboostNicName'))]",
-                "[concat('Microsoft.Compute/images/', variables('cloudboostVersion'))]"
+                "[concat('Microsoft.Compute/images/', parameters('cloudboostVersion'))]"
             ]
         },
         {
@@ -1016,7 +1007,7 @@
         {
             "type": "Microsoft.Compute/images",
             "apiVersion": "2017-12-01",
-            "name": "[variables('cloudboostVersion')]",
+            "name": "[parameters('cloudboostVersion')]",
             "location": "[resourceGroup().location]",
             "tags": {
                 "provisioner": "dps_cloudboost_azurestack_template"
@@ -1056,8 +1047,6 @@
                     "customData": {
                         "value": {
                             "AVE_TIMEZONE": "[parameters('cloudboostTimeZone')]",
-                            "AVE_UPGRADE_CLIENT_DOWNLOADS_URL": "[parameters('cloudboostUpgradeClientDownloadsURI')]",
-                            "AVE_UPGRADE_CLIENT_DOWNLOADS_PACKAGE": "[parameters('cloudboostUpgradeClientDownloadsPackage')]",
                             "AVE_COMMON_PASSWORD": "[parameters('cloudboostCommonPassword')]",
                             "AVE_PASSWORD": "[reference(variables('cloudboostNicName')).ipConfigurations[0].properties.privateIPAddress]",
                             "AVE_EXTERNAL_FQDN": "[if(equals(parameters('cloudboostNetworkInterfaceType'), 'public'), reference(variables('cloudboostPublicIPName'),'2017-10-01').dnsSettings.fqdn,'')]",
